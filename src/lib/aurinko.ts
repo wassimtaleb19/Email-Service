@@ -8,7 +8,7 @@ export const getAurinkoURL = async (serviceType : 'Google' | 'Office365') => {
     }
 
     const params = new URLSearchParams({
-        clientId: process.env.AURINKO_CLIENT_ID as string,
+        clientId: process.env.NEXT_PUBLIC_AURINKO_CLIENT_ID as string,
         serviceType,
         scopes: 'Mail.Read Mail.ReadWrite Mail.Send Mail.Drafts Mail.All',
         responseType: 'code',
@@ -21,7 +21,7 @@ export const getAurinkoURL = async (serviceType : 'Google' | 'Office365') => {
 
 export const exchangeCodeForAccessToken = async (code: string) => {
     try {
-        const response = await axios.post('https://api.aurinko.io/v1/account', {}, {
+        const response = await axios.post(`https://api.aurinko.io/v1/auth/token/${code}`, {}, {
             auth: {
                 username: process.env.AURINKO_CLIENT_ID as string,
                 password: process.env.AURINKO_CLIENT_SECRET as string
@@ -34,9 +34,13 @@ export const exchangeCodeForAccessToken = async (code: string) => {
             userSession: string
         }
     } catch (error) {
-        if(axios.isAxiosError(error)){
-            console.error(error.response?.data)
-        }
+        if (axios.isAxiosError(error)) {
+            console.error("[AURINKO TOKEN ERROR]", {
+                status: error.response?.status,
+                data: error.response?.data,
+                headers: error.response?.headers
+            });
+        }    
         console.error(error)
     }
 }

@@ -21,9 +21,11 @@ export const GET = async (req: NextRequest) =>{
     }
     
     const token = await exchangeCodeForAccessToken(code)
-    if(!token) {
+    if (!token) {
+        console.error("[TOKEN IS NULL - CODE]", code)
         return NextResponse.json({ message: 'Failed to exchange code for access token' }, { status: 400})
     }
+
 
     const accountDetails = await getAccountDetails(token.accessToken)
 
