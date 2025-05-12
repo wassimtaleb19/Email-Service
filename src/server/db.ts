@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@/../prisma/generated/client"; // ✅ use the generated path
 
 import { env } from "@/env";
 
