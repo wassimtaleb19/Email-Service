@@ -5,6 +5,8 @@ export default async function Home() {
     <div className="m-4">
       <h1 className="text-6xl">OAuth:</h1>
       <LinkAccountButton />
+      <p>-------------------------------------------</p>
+      <p>the above link is working locally and on the deployment</p>
     </div>
   );
 }
