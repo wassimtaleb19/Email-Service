@@ -1,6 +1,7 @@
 import { db } from "@/server/db";
 import { NextRequest, NextResponse } from "next/server";
 import { Account } from "@/lib/account";
+import { syncEmailsToDatabase } from "@/lib/sync-to-db";
 
 export const POST = async (req: NextRequest) => {
     const { accountId, userId } = await req.json()
@@ -27,18 +28,18 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json({ error: 'Failed to perform initial sync' }, { status: 500 })
     }
     const { emails, deltaToken } = response
-    console.log('emails', emails)
+    // console.log('emails', emails)
 
-    // await db.account.update({
-    //     where: {
-    //         id : accountId
-    //     },
-    //     data: {
-    //         nextDeltaToken : deltaToken
-    //     }
-    // })
+    await db.account.update({
+        where: {
+            id : accountId
+        },
+        data: {
+            nextDeltaToken : deltaToken
+        }
+    })
 
-    // await syncEmailsToDatabase(emails)
+    await syncEmailsToDatabase(emails, accountId)
 
     console.log('sync completed', deltaToken)
     return NextResponse.json({ success: true }, {status: 200 })
