@@ -1,11 +1,23 @@
-import React from "react";
+'use client'
 
-export default function MailDashboard() {
+import dynamic from 'next/dynamic'
+import React from "react"
+// import Mail from "./mail";
+const Mail = dynamic (() => {
+    return import('./mail')
+}, {
+    ssr: false
+})
+
+const MailDashboard = () => {
     return (
-        <div>
-            <div className="text-5xl">MailDashboard</div>
-            <div className="text-4xl">MailDashboard</div>
-            <div className="text-3xl">MailDashboard</div>
-        </div> 
+        <Mail
+          defaultLayout={[20,32,48]}
+          defaultCollapsed={false}
+          navCollapsedSize={4}
+        />
     );
 }
+
+export default MailDashboard
+
