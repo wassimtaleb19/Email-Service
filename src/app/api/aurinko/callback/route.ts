@@ -43,7 +43,7 @@ export const GET = async (req: NextRequest) => {
   });
 
   if (existingAccount) {
-    // Update existing account
+    // ✅ Email exists, update token
     await db.account.update({
       where: { emailAddress: accountDetails.email },
       data: {
@@ -51,7 +51,7 @@ export const GET = async (req: NextRequest) => {
       },
     });
   } else {
-    // Create new account
+    // ✅ New email, create record
     await db.account.create({
       data: {
         id: token.accountId.toString(),
