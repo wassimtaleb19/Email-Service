@@ -1,76 +1,65 @@
-'use client'
-import React from 'react'
-import { Nav } from './nav'
-import {
-//     AlertCircle,
-//     Archive,
-//     ArchiveX,
-    File,
-    Inbox,
-//     MessagesSquare,
-    Send,
-//     ShoppingCart,
-//     Trash2,
-//     Users2,
-} from "lucide-react"
-// import { usePathname } from 'next/navigation'
-import { useLocalStorage } from 'usehooks-ts'
-import { api } from '@/trpc/react'
+"use client";
+
+import React from "react";
+import { Nav } from "./nav";
+import { File, Inbox, Send } from "lucide-react";
+import { useLocalStorage } from "usehooks-ts";
+import { api } from "@/trpc/react";
 
 type Props = {
-     isCollapsed: boolean 
-}
+  isCollapsed: boolean;
+};
 
 const SideBar = ({ isCollapsed }: Props) => {
-const [ accountId ] = useLocalStorage('accountId', '')
-const [tab] = useLocalStorage<'inbox' | 'draft' | 'sent'>("email-service-tab", "inbox")
-// const refetchInterval = 5000
-// console.log("accountId:", accountId)
-// console.log("tab:", tab)
+  const [accountId] = useLocalStorage("accountId", "");
+  const [tab] = useLocalStorage<"inbox" | "draft" | "sent">(
+    "email-service-tab",
+    "inbox",
+  );
 
-const { data: inboxThreads } = api.account.getNumThreads.useQuery({
+  const { data: inboxCount } = api.account.getNumThreads.useQuery({
     accountId,
-    tab: "inbox"
-})
+    tab: "inbox",
+  });
 
-const { data: draftThreads } = api.account.getNumThreads.useQuery({
+  const { data: draftCount } = api.account.getNumThreads.useQuery({
     accountId,
-    tab: "draft" // ✅ keep this plural if backend uses plural
-})
+    tab: "draft",
+  });
 
-const { data: sentThreads } = api.account.getNumThreads.useQuery({
+  const { data: sentCount } = api.account.getNumThreads.useQuery({
     accountId,
-    tab: "sent"
-})
+    tab: "sent",
+  });
 
-return (
-         <>
-             <Nav
-              isCollapsed={isCollapsed}
-                links={[
-                    {
-                        title: "Inbox",
-                        label: inboxThreads?.toString() || "0",
-                        icon: Inbox,
-                        variant: tab === "inbox" ? "default" : "ghost",
-                    },
-                    {
-                        title: "Draft",
-                        label: draftThreads?.toString() || "0",
-                        icon: File,
-                        variant: tab === "draft" ? "default" : "ghost",
-                    },
-                    {
-                        title: "Sent",
-                        label: sentThreads?.toString() || "0",
-                        icon: Send,
-                        variant: tab === "sent" ? "default" : "ghost",
-                    },
-                ]}
+  return (
+    <>
+      <Nav
+        isCollapsed={isCollapsed}
+        links={[
+          {
+            title: "Inbox",
+            label: inboxCount?.toString() ?? "0",
+            icon: Inbox,
+            variant: tab === "inbox" ? "default" : "ghost",
+          },
+          {
+            title: "Draft",
+            label: draftCount?.toString() ?? "0",
+            icon: File,
+            variant: tab === "draft" ? "default" : "ghost",
+          },
+          {
+            title: "Sent",
+            label: sentCount?.toString() ?? "0",
+            icon: Send,
+            variant: tab === "sent" ? "default" : "ghost",
+          },
+        ]}
+      />
+      <div className="pl-3 pt-2 text-xs text-muted-foreground">{accountId}</div>
+    </>
+  );
+};
 
-            /> 
-            <div className="">{accountId}</div>
-         </>
-    )
-}
-export default SideBar
+export default SideBar;

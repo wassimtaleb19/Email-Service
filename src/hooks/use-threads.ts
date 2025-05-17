@@ -2,6 +2,7 @@ import { api } from "@/trpc/react";
 import React from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { atom, useAtom } from "jotai";
+import { Thread } from "@/types"; // ✅ Import your Thread interface
 
 export const threadIdAtom = atom<string | null>(null);
 
@@ -13,18 +14,13 @@ const useThreads = () => {
   const [threadId, setThreadId] = useAtom(threadIdAtom);
 
   const {
-    data: threads,
+    data: threads = [],
     isFetching,
     refetch,
   } = api.account.getThreads.useQuery(
-    {
-      accountId,
-      tab,
-      done,
-    },
+    { accountId, tab, done },
     {
       enabled: !!accountId && !!tab,
-      placeholderData: (e) => e,
       refetchInterval: 5000,
     },
   );
