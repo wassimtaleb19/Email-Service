@@ -9098,17 +9098,17 @@ export namespace Prisma {
   export type AccountWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     accessToken?: string
+    emailAddress?: string
     AND?: AccountWhereInput | AccountWhereInput[]
     OR?: AccountWhereInput[]
     NOT?: AccountWhereInput | AccountWhereInput[]
     userId?: StringFilter<"Account"> | string
-    emailAddress?: StringFilter<"Account"> | string
     name?: StringFilter<"Account"> | string
     nextDeltaToken?: StringNullableFilter<"Account"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     threads?: ThreadListRelationFilter
     emailAddresses?: EmailAddressListRelationFilter
-  }, "id" | "accessToken">
+  }, "id" | "accessToken" | "emailAddress">
 
   export type AccountOrderByWithAggregationInput = {
     id?: SortOrder

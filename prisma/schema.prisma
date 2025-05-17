@@ -22,7 +22,7 @@ model Account {
   id           String   @id @default(cuid())
   userId       String
   accessToken  String   @unique
-  emailAddress String
+  emailAddress String   @unique
   name         String
 
   nextDeltaToken String?
