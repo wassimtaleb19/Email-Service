@@ -1,3 +1,6 @@
+// this file here is called from link-account-button, and calls this function below:
+// getAurinkoURL
+
 // important to use getAurinkoURL server function inside the frontend section
 
 import { getAurinkoURL } from "@/lib/aurinko";
@@ -9,15 +12,19 @@ export async function POST(req: Request) {
     const { serviceType } = body;
 
     if (serviceType !== "Google" && serviceType !== "Office365") {
-      return NextResponse.json({ error: "Invalid serviceType" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid serviceType" },
+        { status: 400 },
+      );
     }
 
     const url = await getAurinkoURL(serviceType);
     return NextResponse.json({ url });
   } catch (err) {
     console.error("[AURINKO LINK ERROR]", err);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }
-
-

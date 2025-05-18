@@ -90,17 +90,19 @@ export const accountRouter = createTRPCRouter({
         accountId: z.string(),
         tab: z.string(),
         done: z.boolean(),
-        cursor: z.string().optional(), // For pagination
+        cursor: z.string().optional(),
         limit: z.number().default(20),
       }),
     )
     .query(async ({ ctx, input }) => {
+      console.log("typeof input.accountId", typeof input.accountId); // Should be string
+      console.log("typeof ctx.auth.userId", typeof ctx.auth.userId); // Should be string
+
       const account = await authoriseAccountAccess(
         input.accountId,
         ctx.auth.userId,
       );
 
-      // Filtering by tab
       let filter: Prisma.ThreadWhereInput = {
         accountId: account.id,
         done: input.done,
@@ -142,7 +144,7 @@ export const accountRouter = createTRPCRouter({
           inboxStatus: t.inboxStatus,
           draftStatus: t.draftStatus,
           sentStatus: t.sentStatus,
-          emails: t.emails.map((m) => ({
+          emails: t.emails.map((m: any) => ({
             id: m.id,
             threadId: t.id,
             subject: m.subject,
@@ -151,7 +153,6 @@ export const accountRouter = createTRPCRouter({
             body: m.body ?? "",
             bodySnippet: m.bodySnippet ?? "",
             from: m.from as EmailAddress,
-            // Fill the rest as defaults
             createdTime: m.sentAt ? m.sentAt.toISOString() : "",
             lastModifiedTime: m.sentAt ? m.sentAt.toISOString() : "",
             receivedAt: m.sentAt ? m.sentAt.toISOString() : "",
@@ -177,7 +178,6 @@ export const accountRouter = createTRPCRouter({
         }),
       );
 
-      // Infinite scroll: nextCursor
       const nextCursor =
         threads.length === input.limit ? (threads.at(-1)?.id ?? null) : null;
 
