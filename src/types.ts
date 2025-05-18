@@ -95,3 +95,9 @@ export interface Thread {
   sentStatus: boolean;
   emails: EmailMessage[]; // already defined above
 }
+
+/** The light wrapper returned by getThreads for cursor-paging */
+export interface GetThreadsResult {
+  threads: Thread[]; // ← Thread is the one you already defined
+  nextCursor: string | null;
+}

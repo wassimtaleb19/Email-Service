@@ -1,43 +1,47 @@
 import { api } from "@/trpc/react";
-import React from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { atom, useAtom } from "jotai";
-import { Thread } from "@/types"; // ✅ Import your Thread interface
+import type { Thread, GetThreadsResult } from "@/types";
+import type { InfiniteData } from "@tanstack/react-query";
 
 export const threadIdAtom = atom<string | null>(null);
 
 const useThreads = () => {
   const { data: accounts } = api.account.getAccounts.useQuery();
+
+  /* local-storage state */
   const [accountId] = useLocalStorage("accountId", "");
-  const [tab] = useLocalStorage("email-service-tab", "inbox");
+  const [tab] = useLocalStorage<"inbox" | "sent" | "draft">(
+    "email-service-tab",
+    "inbox",
+  );
   const [done] = useLocalStorage("email-service-done", false);
   const [threadId, setThreadId] = useAtom(threadIdAtom);
 
-  const {
-    data: threads = [],
-    isFetching,
-    refetch,
-  } = api.account.getThreads.useQuery(
-    { accountId, tab, done },
-    {
-      enabled: !!accountId && !!tab,
-      refetchInterval: 5000,
-    },
-  );
+  /* infinite query */
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    api.account.getThreads.useInfiniteQuery(
+      { accountId, tab, done, limit: 20 },
+      {
+        enabled: !!accountId && !!tab,
+        getNextPageParam: (last) => last.nextCursor,
+      },
+    );
+
+  /* flatten pages */
+  const pages = data as InfiniteData<GetThreadsResult> | undefined;
+  const threads: Thread[] = pages?.pages.flatMap((p) => p.threads) ?? [];
 
   return {
     threads,
-    isFetching,
-    refetch,
-    accountId,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
     threadId,
     setThreadId,
-    account: accounts?.find((e) => e.id === accountId),
+    accountId,
+    account: accounts?.find((a) => a.id === accountId),
   };
 };
 
 export default useThreads;
-
-// NOTE FOR ME :)
-// default export → no {}
-// Named export → use {}
