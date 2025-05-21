@@ -95,8 +95,9 @@ export const accountRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
-      console.log("typeof input.accountId", typeof input.accountId); // Should be string
-      console.log("typeof ctx.auth.userId", typeof ctx.auth.userId); // Should be string
+      // these are for testing:)
+      // console.log("typeof input.accountId", typeof input.accountId); // Should be string
+      // console.log("typeof ctx.auth.userId", typeof ctx.auth.userId); // Should be string
 
       const account = await authoriseAccountAccess(
         input.accountId,
