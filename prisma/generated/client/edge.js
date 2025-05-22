@@ -234,7 +234,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Moussa\\Desktop\\WIX-MASHROO3 TA5AROSH\\Email-Service\\prisma\\generated\\client",
+      "value": "/home/wix/Email-Service/prisma/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -243,12 +243,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Moussa\\Desktop\\WIX-MASHROO3 TA5AROSH\\Email-Service\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/wix/Email-Service/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

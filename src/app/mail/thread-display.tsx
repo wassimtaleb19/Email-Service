@@ -2,7 +2,7 @@
 
 import React from "react";
 import useThreads from "@/hooks/use-threads";
-import { Archive, ArchiveX, Trash2, Clock, MoreVertical } from "lucide-react";
+import { Archive, ArchiveX, Trash2, Clock, MoreVertical, Reply } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { format } from "date-fns";
+import EmailDisplay from "./email-display";
+import ReplyBox from "./reply-box";
 
 const ThreadDisplay = () => {
   const { threadId, threads } = useThreads();
@@ -47,7 +49,7 @@ const ThreadDisplay = () => {
         </Button>
         <div className="ml-auto flex items-center">
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
               <Button
                 className="ml-2"
                 variant={"ghost"}
@@ -72,7 +74,7 @@ const ThreadDisplay = () => {
       {/* profile-reply-to row */}
       {thread ? (
         <>
-          <div className="flex flex-1 flex-col overflow-scroll">
+          <div className="flex flex-1 flex-col overflow-scroll scrollbar-hide">
             <div className="flex items-center p-4">
               <div className="flex items-center gap-4 text-sm">
                 <Avatar>
@@ -106,17 +108,17 @@ const ThreadDisplay = () => {
               )}
             </div>
             <Separator />
-            <div className="flex max-h-[calc(100vh-500px)] flex-col overflow-scroll">
+            <div className="flex max-h-[calc(100vh-500px)] flex-col overflow-scroll scrollbar-hide">
               <div className="flex flex-col gap-4 p-6">
                 {thread.emails.map((email) => {
-                  return <div key={email.id}>{email.subject}</div>;
+                  return <EmailDisplay key={email.id} email={email} />;
                 })}
               </div>
             </div>
             <div className="flex-1"></div>
             <Separator className="mt-auto" />
             {/* Reply Box */}
-            Reply Box
+            <ReplyBox />
           </div>
         </>
       ) : (

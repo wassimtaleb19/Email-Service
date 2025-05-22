@@ -6,10 +6,18 @@ import type { Thread } from "@/types"; // Your frontend Thread type
 export const threadIdAtom = atom<string | null>(null);
 
 const useThreads = () => {
+  const { data: account } = api.account.getAccounts.useQuery();
   const [accountId] = useLocalStorage("accountId", "");
   const [tab] = useLocalStorage("email-service-tab", "inbox");
-  const [done] = useLocalStorage("email-service-done", false);
+  const rawDone = useLocalStorage("email-service-done", false);
+  const done = typeof rawDone === "boolean" ? rawDone : false;
+  
+
   const [threadId, setThreadId] = useAtom(threadIdAtom);
+
+//   console.log("🧠 accountId from localStorage:", accountId);
+//   console.log("🧠 user accounts from Clerk:", account);
+
 
   // Infinite query
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
@@ -31,6 +39,8 @@ const useThreads = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
+    accountId,
+    account: account?.find((e) => e.id === accountId),
   };
 };
 

@@ -14,6 +14,7 @@ import { AccountSwitcher } from "./account-switcher";
 import Sidebar from "./sidebar";
 import ThreadList from "./thread-list";
 import ThreadDisplay from "./thread-display";
+import { useLocalStorage } from "usehooks-ts";
 
 type Props = {
   defaultLayout: number[] | undefined;
@@ -27,6 +28,8 @@ const Mail = ({
   defaultCollapsed,
 }: Props) => {
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
+  
+const [done, setDone] = useLocalStorage("email-service-done", false);
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -74,34 +77,25 @@ const Mail = ({
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-          <Tabs defaultValue="inbox">
-            <div className="flex items-center px-4 py-2">
-              <h1 className="text-xl font-bold">Inbox</h1>
-              <TabsList className="ml-auto">
-                <TabsTrigger
-                  value="inbox"
-                  className="text-xinc-600 dark:text-zinc-200"
-                >
-                  Inbox
-                </TabsTrigger>
-                <TabsTrigger
-                  value="done"
-                  className="text-xinc-600 dark:text-zinc-200"
-                >
-                  Done
-                </TabsTrigger>
-              </TabsList>
-            </div>
-            <Separator />
-            {/* Search Bar */}
-            Search Bar
-            <TabsContent value="inbox">
-              <ThreadList />
-            </TabsContent>
-            <TabsContent value="done">
-              <ThreadList />
-            </TabsContent>
-          </Tabs>
+
+<Tabs value={done ? "done" : "inbox"} onValueChange={(val) => setDone(val === "done")}>
+  <div className="flex items-center px-4 py-2">
+    <h1 className="text-xl font-bold">Inbox</h1>
+    <TabsList className="ml-auto">
+      <TabsTrigger value="inbox">Inbox</TabsTrigger>
+      <TabsTrigger value="done">Done</TabsTrigger>
+    </TabsList>
+  </div>
+  <Separator />
+  Search Bar
+  <TabsContent value="inbox">
+    <ThreadList />
+  </TabsContent>
+  <TabsContent value="done">
+    <ThreadList />
+  </TabsContent>
+</Tabs>
+
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[2]} minSize={30}>

@@ -53,7 +53,7 @@ export function ThreadList() {
   return (
     <div
       ref={containerRef}
-      className="max-h-[calc(100vh-120px)] max-w-full overflow-y-scroll"
+      className="max-h-[calc(100vh-120px)] max-w-full overflow-y-scroll scrollbar-hide"
       onScroll={handleScroll}
     >
       {/* <div className="flex flex-col gap-2 p-4 pt-0" ref={parent}> */}

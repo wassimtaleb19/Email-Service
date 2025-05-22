@@ -4,6 +4,7 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { type Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
+import KBar from "@/components/kbar";
 
 export const metadata: Metadata = {
   title: "Email Service",
@@ -17,15 +18,19 @@ export default function RootLayout({
   return (
     // clerk authentication
     <ClerkProvider>
-      <html lang="en">
-        <body className={`${GeistSans.variable}`}>
+      <html lang="en" suppressHydrationWarning className={`${GeistSans.variable}`}>
+        <body>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
-            <TRPCReactProvider>{children}</TRPCReactProvider>
+            <TRPCReactProvider>
+              <KBar>
+                {children}
+              </KBar>
+            </TRPCReactProvider>
           </ThemeProvider>
         </body>
       </html>
