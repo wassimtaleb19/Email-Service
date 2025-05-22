@@ -87,12 +87,16 @@ const EmailEditor = ({ toValues, ccValues, subject, setSubject, to, handleSend, 
                         to {to.join(', ')}
                     </span>
                 </div>
+            {/* <AIComposeButton
+                        isComposing={defaultToolbarExpand}
+                        onGenerate={setGeneration}
+                    /> */}
             </div>
 
         </div>
 
-        <div className="prose w-full px-4">
-            <EditorContent editor={editor} value={value} />
+        <div className="prose w-full px-4 py-5">
+            <EditorContent editor={editor} value={value} placeholder="Write your email here..." />
         </div>
 
         <Separator />
