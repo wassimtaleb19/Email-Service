@@ -103,11 +103,11 @@ const EmailEditor = ({ toValues, ccValues, subject, setSubject, to, handleSend, 
 
         <div className="py-3 px-4 flex items-center justify-between">
         <span className="text-sm flex items-center gap-2">
-            Tip: Press
+            {/* Tip: Press
                 <kbd className="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg">
             CTRL + J
                 </kbd>
-            for AI autocomplete
+            for AI autocomplete */}
         </span>
 
             <Button onClick={async () => {
